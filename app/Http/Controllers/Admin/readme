@@ -1,0 +1,242 @@
+用户认证配置（增加“守卫”和“服务提供者”）
+
+打开 config/auth.php 配置看一下就知道什么是“守卫”了
+'guards' => [
+    'web' => [
+        'driver' => 'session',
+        'provider' => 'users',
+    ],
+
+    'api' => [
+        'driver' => 'token',
+        'provider' => 'users',
+    ],
+],
+很明显，所谓的“守卫”就laravel认证系统的端口，默认已经有两个“守卫”了，一个守web进口的，一个守api接口进口的
+
+现在如果想添加一个后台“守卫”的话，就增加一个配置就行了（driver 表示认证系统用什么来驱动，provider 表示认证服务由谁的提供）
+
+--------------------------------------------
+
+通过工厂制造点数据 http://www.jyguagua.com/?p=2573
+
+$user = factory(App\User::class)->create();
+$user = factory(App\User::class，100)->create();
+$user = factory(App\User::class)->create([
+    'username' => 'pizzamuncher'
+]);
+
+有时候我们并不需要把数据存到数据库里，只是想通过工厂制造点数据查看下，那么，我们可以使用make 方法。
+$user = factory(App\User::class)->make();
+
+----------------------------------------------
+
+一些简单的解释 http://www.cnblogs.com/qiyongchu/p/5810663.html
+
+$app->make('App\Models\Post'); 这句话和 new App\Models\Post；的结果完全一样；
+
+$app->make('App\Models\Post'); 你可以这样写，$app->make('post');
+
+
+-----------------------------------------------
+自动依赖注入：
+http://www.cnblogs.com/shiwenhu/p/6882340.html
+什么是依赖注入，用大白话将通过类型提示的方式向函数传递参数。 在 Laravel 中，不仅仅可以自动注入 Bar，也可以自动注入 Baz:
+
+/routes/web.php
+class Baz {}
+class Bar
+{
+    public $baz;
+
+    public function __construct(Baz $baz)
+    {
+        $this->baz = $baz;
+    }
+
+}
+
+Route::get('bar', function(Bar $bar) {
+       dd($bar->baz);
+});
+显示结果:
+
+Baz {#276}
+小结
+
+通过上述两个例子，可以看出，在 Laravel 中，我们要在类或者函数中使用其他类体用的服务，只需要通过类型提示的方式传递参数，
+而 Laravel 会自动帮我们去寻找响对应的依赖。
+那么，Laravel 是如何完成这项工作的呢？答案就是通过服务容器。
+
+-----------------------------------------------
+
+什么是服务容器 ？ 装着各种服务实例的特殊类。
+
+可以通过「去餐馆吃饭」来进行类比：
+
+饭 - 服务
+
+吃饭 - 使用服务，即调用该服务的地方
+
+盘子 - 装饭的容器，即服务容器
+
+服务员 - 服务提供者，负责装饭、上饭
+
+这个过程在 Laravel 中如何实现呢？
+
+饭
+定义 Rice 类：
+
+/app/Rice.php
+<?php
+
+namespace App;
+
+class Rice
+{
+    public function food()
+    {
+        return '香喷喷的白米饭';
+    }
+}
+
+把饭装盘子
+
+在容器中定义了名为 rice 的变量（你也可以起其他名字，比如 rice_container），绑定了 Food 的实例：
+
+app()->bind('rice', function (){
+    return new \App\Rice();
+});
+
+也可以写成:
+
+app()->bind('rice',\App\Rice::class);
+
+现在，吃饭了，通过 make 方法提供吃饭的服务：
+
+Route::get('eat', function() {
+       return app()->make('rice')->food(); // 或者 return resolve('rice')->food()；
+});
+
+make 方法传入我们刚才定义的变量名即可调用该服务。
+
+访问 /eat，返回 香喷喷的白米饭。为了方便起见，我们在路由文件中直接实现了该过程，相当于自给自足。但是服务通常由服务提供者来管理的。
+
+因此，我们可以让 AppServiceProvider 这个服务员来管理该服务：
+
+/app/Providers/AppServiceProvider.php
+namespace App\Providers;
+
+public function register()
+{
+    $this->app->bind('food_container',Rice::class);
+}
+
+更为常见的是，我们自己创建一个服务员：
+
+$ php artisan make:provider RiceServiceProvider
+
+注册:
+
+/app/Providers/RiceServiceProvider.php
+<?php
+
+use App\Rice;
+public function register()
+{
+    $this->app->bind('rice',Rice::class);
+}
+这里定义了 register() 方法，但是还需要调用该方法才能真正绑定服务到容器，因此，需要将其添加到 providers 数组中：
+
+/config/app.php
+'providers' => [
+   App\Providers\RiceServiceProvider::class,
+],
+
+这一步有何作用呢？Laravel 在启动的时候会访问该文件，然后调用里面的所有服务提供者的 register() 方法，这样我们的服务就被绑定到容器中了。
+
+小结
+
+通过上述的例子，基本上可以理解服务容器和服务提供者的使用。当然了，我们更为常见的还是使用类型提示来传递参数：
+
+use App\Rice;
+
+Route::get('eat', function(Rice $rice) {
+       return $rice->food();
+
+});
+在本例中，使用自动依赖注入即可。不需要在用 bind 来手动绑定以及 make 来调用服务。
+那么，为什么还需要 bind 和 make 呢？
+make 比较好理解，我们有一些场合 Laravel 不能提供自动解析，那么这时候手动使用 make 解析就可以了，而 bind 的学问就稍微大了点，后面将会详细说明。
+
+--------------------------------------
+
+门面是什么，我们回到刚才的「吃饭」的例子:
+
+Route::get('eat', function(Rice $rice) {
+       return $rice->food();
+
+});
+在 Laravel，通常还可以这么写:
+
+Route::get('eat', function() {
+       return Rice::food();
+});
+或者
+
+Route::get('eat', function() {
+       return rice()->food();
+});
+那么，Laravel 是如何实现的呢？答案是通过门面。
+
+门面方法实现
+
+先来实现 Rice::food()，只需要一步：
+
+/app/RiceFacade.php
+<?php
+
+namespace App;
+use Illuminate\Support\Facades\Facade;
+
+class RiceFacade extends Facade
+{
+
+    protected static function getFacadeAccessor()
+    {
+        return 'rice';
+    }
+}
+现在，RiceFacade 就代理了 Rice 类了，这就是门面的本质了。我们就可以直接使用：
+
+Route::get('eat', function() {
+
+    dd(\App\RiceFacade::food());
+
+});
+因为 \App\RiceFacade 比较冗长，我们可以用 php 提供的 class_alias 方法起个别名吧：
+
+/app/Providers/RiceServiceProvider.php
+public function register()
+{
+   $this->app->bind('rice',\App\Rice::class);
+   class_alias(\App\RiceFacade::class, 'Rice');
+}
+这样做的话，就实现了一开始的用法：
+
+Route::get('eat', function() {
+       return Rice::food();
+});
+看上去就好像直接调用了 Rice 类，实际上，调用的是 RiceFacade 类来代理，因此，个人觉得Facade 翻译成假象比较合适。
+
+最后，为了便于给代理类命名，Laravel 提供了统一命名别名的地方：
+
+/config/app.php
+
+'aliases' => [
+
+    'Rice' => \App\RiceFacade::class,
+
+],
+
+---------------------------------------------------
