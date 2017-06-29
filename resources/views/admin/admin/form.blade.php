@@ -16,15 +16,17 @@
         <!-- /.box-header -->
         <div class="box-body">
           <div class="panel-body">
-            <form class="form-horizontal" role="form" method="POST" action="{{ route('admin.store') }}">
-              {{ csrf_field() }}
+              @if (!$model->exists)
+                  {{ Form::open(array('route' => array('admin.store'), 'files' => true, 'class' => 'form-horizontal')) }}
+              @else
+                  {{ Form::model($model, array('method' => 'PATCH', 'route' => array('admin.update', $model->id), 'files' => true, 'class' => 'form-horizontal')) }}
+              @endif
 
               <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                 <label for="name" class="col-md-4 control-label">用户名</label>
 
                 <div class="col-md-6">
-                  <input id="name" type="text" class="form-control" name="name" value="{{ $model->name or old('name') }}" autofocus>
-
+                    {{ Form::text('name', null, array('class' => 'form-control')) }}
                   @if ($errors->has('name'))
                     <span class="help-block">
                         <strong>{{ $errors->first('name') }}</strong>
@@ -68,7 +70,8 @@
                 </div>
               </div>
 
-            </form>
+                  {{ Form::close()  }}
+
           </div>
         </div>
         <!-- /.box-body -->

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -35,6 +36,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+        //在这个中间件里传递参数admin 后台登录后会直接redirect到/admin路由页面
         $this->middleware('guest:admin', ['except' => 'logout']);
         $this->username = 'username';//config('admin.global.username');
     }

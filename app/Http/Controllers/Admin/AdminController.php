@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -45,6 +46,7 @@ class AdminController extends Controller
 
     public function store(Request $request){
         $input = $request->input();
+        dd($input);
         $admin = [
             'name' => $input['name'],
             'email' => $input['email'],
@@ -52,6 +54,24 @@ class AdminController extends Controller
         ];
         $admin = factory(Admin::class)->create($admin);
         dd($admin);
+    }
+
+    public function update(Request $request, $id) {
+        $model = Admin::find($id);
+        $data = $model->toArray();
+        $input = $request->toArray();
+        $validator = Validator::make($input,[
+            'name'=> 'required|max:1',
+            'headline_tags'=> 'required|max:128',
+            'target_id'=> 'max:255',
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+        return $validator->errors()->all();
+        abort(403);
     }
 
     public function batAdmin(){

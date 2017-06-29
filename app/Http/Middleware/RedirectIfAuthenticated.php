@@ -23,7 +23,6 @@ class RedirectIfAuthenticated
             $url = $guard ? $guard : '/home';
             return redirect($url);
         }
-
         return $next($request);
     }
 }

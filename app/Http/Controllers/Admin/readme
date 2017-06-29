@@ -1,24 +1,26 @@
-用户认证配置（增加“守卫”和“服务提供者”）
 
-打开 config/auth.php 配置看一下就知道什么是“守卫”了
-'guards' => [
-    'web' => [
-        'driver' => 'session',
-        'provider' => 'users',
-    ],
+laravel 语言包
+composer require "overtrue/laravel-lang:~3.0"
 
-    'api' => [
-        'driver' => 'token',
-        'provider' => 'users',
-    ],
-],
-很明显，所谓的“守卫”就laravel认证系统的端口，默认已经有两个“守卫”了，一个守web进口的，一个守api接口进口的
+Laraval 5.*
+完成上面的操作后，将项目文件 config/app.php 中的下一行
+Illuminate\Translation\TranslationServiceProvider::class,
+替换为：
+Overtrue\LaravelLang\TranslationServiceProvider::class,
 
-现在如果想添加一个后台“守卫”的话，就增加一个配置就行了（driver 表示认证系统用什么来驱动，provider 表示认证服务由谁的提供）
+Lumen
+在 bootstrap/app.php 中添加下面这行:
+$app->register(Overtrue\LaravelLang\TranslationServiceProvider::class);
+
+配置
+修改项目语言 config/app.php：
+'locale' => 'zh-CN',
+
+原文 http://www.jianshu.com/p/12cf798d27bf
 
 --------------------------------------------
 
-通过工厂制造点数据 http://www.jyguagua.com/?p=2573
+通过工厂制造点数据
 
 $user = factory(App\User::class)->create();
 $user = factory(App\User::class，100)->create();
@@ -29,19 +31,21 @@ $user = factory(App\User::class)->create([
 有时候我们并不需要把数据存到数据库里，只是想通过工厂制造点数据查看下，那么，我们可以使用make 方法。
 $user = factory(App\User::class)->make();
 
+原文 http://www.jyguagua.com/?p=2573
 ----------------------------------------------
 
-一些简单的解释 http://www.cnblogs.com/qiyongchu/p/5810663.html
+一些简单的解释
 
 $app->make('App\Models\Post'); 这句话和 new App\Models\Post；的结果完全一样；
-
 $app->make('App\Models\Post'); 你可以这样写，$app->make('post');
 
+原文 http://www.cnblogs.com/qiyongchu/p/5810663.html
 
 -----------------------------------------------
 自动依赖注入：
 http://www.cnblogs.com/shiwenhu/p/6882340.html
-什么是依赖注入，用大白话将通过类型提示的方式向函数传递参数。 在 Laravel 中，不仅仅可以自动注入 Bar，也可以自动注入 Baz:
+什么是依赖注入，用大白话将通过类型提示的方式向函数传递参数。
+在 Laravel 中，不仅仅可以自动注入 Bar，也可以自动注入 Baz:
 
 /routes/web.php
 class Bar
