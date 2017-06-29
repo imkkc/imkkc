@@ -18,11 +18,15 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            //return redirect('/home');
-            // 根据不同 guard 跳转到不同的页面
+
             $url = $guard ? $guard : '/home';
             return redirect($url);
         }
         return $next($request);
+        /**
+        未登录时候，login经过中间件，
+        这时候 Auth::guard($guard)->check()一定是false 因为还没有登录，
+        登录认证信息产生在return $next($request) 之后
+         */
     }
 }
