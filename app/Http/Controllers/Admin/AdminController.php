@@ -16,7 +16,8 @@ class AdminController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth.admin:admin','menu:admin']);
+        //view()->share('auth_user', $this->authUser);
+        //$this->middleware(['auth.admin:admin','menu:admin']);
     }
 
     public function index(Request $request) {
@@ -35,6 +36,9 @@ class AdminController extends Controller
     }
 
     public function show($id){
+        if (!is_numeric($id)) {
+            abort(503);
+        }
         $model = Admin::find($id);
         return view('admin.admin.form',compact('model'));
     }

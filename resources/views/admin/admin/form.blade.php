@@ -63,9 +63,8 @@
 
               <div class="form-group">
                 <div class="col-md-8 col-md-offset-4">
-                  <button type="submit" class="btn btn-primary">
-                    确认提交
-                  </button>
+                  <button type="submit" class="btn btn-primary">确认提交</button>
+                  <button type="button" class="btn btn-default" onclick="history.go(-1)">返回</button>
                 </div>
               </div>
 

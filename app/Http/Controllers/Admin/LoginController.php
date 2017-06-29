@@ -63,6 +63,7 @@ class LoginController extends Controller
 
     /**
      * 这个方法是laravel内部方法，同样命名在这里改写下redirect路径
+     * @author imkkc
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */

@@ -17,7 +17,7 @@ class DashboardController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth.admin:admin','menu:admin']);
+        //$this->middleware(['auth.admin:admin','menu:admin']);
     }
 
     /**

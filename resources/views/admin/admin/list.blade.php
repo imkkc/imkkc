@@ -44,7 +44,7 @@
               <td>{{$item->created_at}}</td>
               <td>{{$item->updated_at}}</td>
               <td>
-                <a class="btn btn-xs"><i class="fa fa-edit"></i> 修改</a>
+                <a class="btn btn-xs" href="{{ url('admin/'.$item->id) }}"><i class="fa fa-edit"></i> 修改</a>
                 <a class="btn btn-xs"><i class="fa fa-pause"></i> 停用</a>
               </td>
             </tr>

@@ -44,23 +44,18 @@ http://www.cnblogs.com/shiwenhu/p/6882340.html
 什么是依赖注入，用大白话将通过类型提示的方式向函数传递参数。 在 Laravel 中，不仅仅可以自动注入 Bar，也可以自动注入 Baz:
 
 /routes/web.php
-class Baz {}
 class Bar
 {
     public $baz;
-
     public function __construct(Baz $baz)
     {
         $this->baz = $baz;
     }
-
 }
-
 Route::get('bar', function(Bar $bar) {
        dd($bar->baz);
 });
 显示结果:
-
 Baz {#276}
 小结
 
@@ -104,6 +99,8 @@ class Rice
 
 在容器中定义了名为 rice 的变量（你也可以起其他名字，比如 rice_container），绑定了 Food 的实例：
 
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
 app()->bind('rice', function (){
     return new \App\Rice();
 });
@@ -111,6 +108,8 @@ app()->bind('rice', function (){
 也可以写成:
 
 app()->bind('rice',\App\Rice::class);
+
+-=-=--=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=
 
 现在，吃饭了，通过 make 方法提供吃饭的服务：
 

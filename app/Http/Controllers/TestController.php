@@ -5,7 +5,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
-class TestController extends Controller
+class TestController //extends Controller
 {
 
     public function index()
@@ -37,6 +37,7 @@ class TestController extends Controller
                 'color'    => 'success'
             ]
         ];
+        dd($data);
         return view('demo.test')->with($data);
     }
     
