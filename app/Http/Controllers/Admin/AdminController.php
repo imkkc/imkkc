@@ -31,7 +31,8 @@ class AdminController extends Controller
     }
 
     public function create(){
-        $page_title = '用户列表';
+        $model = new Admin();
+        $page_title = '用户添加';
         $page_description = '后台管理者中心';
         return view('admin.admin.form',compact('model','page_title','page_description'));
     }
