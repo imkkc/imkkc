@@ -23,10 +23,9 @@
               @endif
 
               <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                <label for="name" class="col-md-4 control-label">用户名</label>
-
+                <label for="name" class="col-md-4 control-label">用户帐号</label>
                 <div class="col-md-6">
-                    {{ Form::text('name', null, array('class' => 'form-control')) }}
+                    {{ Form::text('name', null, array('placeholder' => '请输入用户名','class' => 'form-control')) }}
                   @if ($errors->has('name'))
                     <span class="help-block">
                         <strong>{{ $errors->first('name') }}</strong>
@@ -37,9 +36,8 @@
 
               <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                 <label for="email" class="col-md-4 control-label">邮箱地址</label>
-
                 <div class="col-md-6">
-                    {{ Form::text('email', null, array('class' => 'form-control')) }}
+                    {{ Form::text('email', null, array('placeholder' => '请输入邮箱','class' => 'form-control')) }}
                   @if ($errors->has('email'))
                     <span class="help-block">
                         <strong>{{ $errors->first('email') }}</strong>
@@ -49,11 +47,9 @@
               </div>
 
               <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                <label for="password" class="col-md-4 control-label">密码</label>
-
+                <label for="password" class="col-md-4 control-label">登录密码</label>
                 <div class="col-md-6">
-                  <input id="password" type="text" class="form-control" name="password">
-
+                    {{ Form::text('password', '', array('placeholder' => !$model->exists ? '请输入密码' : '重新设置密码','class' => 'form-control')) }}
                   @if ($errors->has('password'))
                     <span class="help-block">
                                         <strong>{{ $errors->first('password') }}</strong>

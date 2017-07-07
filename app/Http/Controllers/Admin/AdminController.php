@@ -21,13 +21,21 @@ class AdminController extends Controller
         //$this->middleware(['auth.admin:admin','menu:admin']);
     }
 
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $pageQuery = $request->toArray();
+        $where     = array();
+        if (isset($pageQuery['name']) && $pageQuery['name']) {
+            $where[] = array('name','like','%'.$pageQuery['name'].'%');
+        }
+        if (isset($pageQuery['email']) && $pageQuery['email']) {
+            $where[] = array('email','like','%'.$pageQuery['email'].'%');
+        }
+        $model = Admin::where($where)->paginate($pageQuery['perPage']);
         $pageQuery['perPage'] = $request->get('perPage') ? $request->get('perPage') : 10;
-        $model = Admin::paginate($pageQuery['perPage']);
-        $page_title = '用户列表';
-        $page_description = '后台管理者中心';
-        return view('admin.admin.list',compact('model','page_title','page_description','pageQuery'));
+        $page_title           = '用户列表';
+        $page_description     = '后台管理者中心';
+        return view('admin.admin.list', compact('model', 'page_title', 'page_description', 'pageQuery'));
     }
 
     public function create(){

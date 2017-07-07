@@ -20,10 +20,15 @@
         <!-- /.box-header -->
         <div class="box-body">
           <div id="example1_filter" class="dataTables_filter">
-            账户名:<input type="search" class="form-control" placeholder="" aria-controls="example1">
-            邮箱:<input type="search" class="form-control" placeholder="" aria-controls="example1">
+            {!! Form::open(array('route' => array('admin.index'), 'class'=>'form-horizontal', 'method'=>'get')) !!}
+            {!! Form::label('title','用户名:') !!}
+            {!! Form::text('name',null,['placeholder' => '请输入用户名','class'=>'form-control']) !!}
+            {!! Form::label('title','邮 箱:') !!}
+            {!! Form::text('email',null,['placeholder' => '请输入邮箱','class'=>'form-control']) !!}
+            {!! Form::hidden('perPage', $pageQuery['perPage']) !!}
             <a class="btn btn-primary"><i class="glyphicon glyphicon-search"></i>搜索</a>
-            <a class="btn btn-default"><i class="glyphicon glyphicon-user"></i> 添加</a>
+            <a class="btn btn-default" href="{{url('/admin/create')}}"><i class="glyphicon glyphicon-user"></i> 添加</a>
+            {!! Form::close() !!}
           </div>
 
           <table id="example1" class="table table-bordered table-striped table-hover">
@@ -94,7 +99,8 @@
         });
 
         $(".glyphicon-search").parent().click(function(){
-            location.href = '{{url()->current()}}?perPage={{$pageQuery['perPage']}}';
+            {{--location.href = '{{url()->current()}}?perPage={{$pageQuery['perPage']}}';--}}
+            $('.form-horizontal').submit();
         });
 
     });
