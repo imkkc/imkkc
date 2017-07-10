@@ -26,6 +26,7 @@ Route::group(['namespace' => 'Admin','middleware' => ['auth.admin:admin','menu:a
     //后台权限管理
     Route::any('batAdmin', 'AdminController@batAdmin');
     Route::any('admin/index', 'AdminController@index');
+    Route::any('admin/changeStatus', 'AdminController@changeStatus');
     Route::resource('admin', 'AdminController');
 
 });

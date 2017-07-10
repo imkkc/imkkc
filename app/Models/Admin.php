@@ -26,4 +26,30 @@ class Admin extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public static $status = [
+        'color' => [
+            0 => 'red',
+            1 => 'green'
+        ],
+        'isOpen' => [
+            0 => '已关闭',
+            1 => '已开启'
+        ],
+    ];
+
+    public static $option = [
+        'icons' => [
+            1 => 'fa-pause',
+            0 => 'fa-play'
+        ],
+        'color'=>[
+            1 => 'red',
+            0 => 'green'
+        ],
+        'status' => [
+            1 => '关闭',
+            0 => '开启'
+        ]
+    ];
 }

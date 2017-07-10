@@ -5,7 +5,9 @@ scratch. This page gets rid of all links and provides the needed markup only.--}
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{{ $page_title or "AdminLTE Dashboard" }}</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    @yield('meta')
+    <title>{{ $page['page_title'] or "imkkc backend" }}</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
@@ -20,6 +22,9 @@ scratch. This page gets rid of all links and provides the needed markup only.--}
          folder instead of downloading all of them to reduce the load. -->
     <link rel="stylesheet" href="{{ asset("/packages/admin-lte/dist/css/skins/skin-blue.min.css")}}">
     @yield('css')
+    <style>
+      .box{border-top: 1px solid #d2d6de}
+    </style>
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -65,6 +70,7 @@ scratch. This page gets rid of all links and provides the needed markup only.--}
     <script src="{{ asset ("/packages/admin-lte/plugins/fastclick/fastclick.js") }}"></script>--}}
     <!-- AdminLTE App -->
     <script src="{{ asset ("/packages/admin-lte/dist/js/app.min.js") }}"></script>
+    <script src="{{ asset ("/js/common.js") }}"></script>
     @yield('js')
     <!-- Optionally, you can add Slimscroll and FastClick plugins.
           Both of these plugins are recommended to enhance the

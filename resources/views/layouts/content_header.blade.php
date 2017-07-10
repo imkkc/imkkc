@@ -7,8 +7,8 @@
 --}}
 <section class="content-header">
     <h1>
-        {{ $page_title or null }}
-        <small>{{ $page_description or null }}</small>
+        {{ $page['page_title'] or null }}
+        <small>{{ $page['page_description'] or null }}</small>
     </h1>
 
     <!-- You can dynamically generate breadcrumbs here -->
