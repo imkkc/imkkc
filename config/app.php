@@ -52,7 +52,8 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
-
+    'package' => '/packages/admin-lte/',
+    'plugins' => '/packages/admin-lte/plugins/',
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

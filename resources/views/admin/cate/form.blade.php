@@ -33,45 +33,45 @@
               @endif
 
           @if (!$model->exists)
-                  {{ Form::open(array('route' => array('admin.store'), 'files' => true, 'class' => 'form-horizontal')) }}
+                  {{ Form::open(array('route' => array('admin-cate.store'), 'files' => true, 'class' => 'form-horizontal')) }}
               @else
-                  {{ Form::model($model, array('method' => 'PATCH', 'route' => array('admin.update', $model->id), 'files' => true, 'class' => 'form-horizontal')) }}
+                  {{ Form::model($model, array('method' => 'PATCH', 'route' => array('admin-cate.update', $model->id), 'files' => true, 'class' => 'form-horizontal')) }}
               @endif
 
-              <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                <label for="name" class="col-md-4 control-label">用户帐号</label>
+              <div class="form-group{{ $errors->has('cate_name') ? ' has-error' : '' }}">
+                <label for="name" class="col-md-4 control-label">菜单名称</label>
                 <div class="col-md-6">
-                    {{ Form::text('name', null, array('placeholder' => '请输入用户名','class' => 'form-control')) }}
-                  @if ($errors->has('name'))
+                    {{ Form::text('cate_name', null, array('placeholder' => '请输入菜单名称','class' => 'form-control')) }}
+                  @if ($errors->has('cate_name'))
                     <span class="help-block">
-                        <strong>{{ $errors->first('name') }}</strong>
+                        <strong>{{ $errors->first('cate_name') }}</strong>
                     </span>
                   @endif
                 </div>
               </div>
 
-              <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                <label for="email" class="col-md-4 control-label">邮箱地址</label>
+              <div class="form-group{{ $errors->has('cate_path') ? ' has-error' : '' }}">
+                <label for="email" class="col-md-4 control-label">菜单路径</label>
                 <div class="col-md-6">
-                    {{ Form::text('email', null, array('placeholder' => '请输入邮箱','class' => 'form-control')) }}
-                  @if ($errors->has('email'))
+                    {{ Form::text('cate_path', null, array('placeholder' => '请输入菜单路径','class' => 'form-control')) }}
+                  @if ($errors->has('cate_path'))
                     <span class="help-block">
-                        <strong>{{ $errors->first('email') }}</strong>
+                        <strong>{{ $errors->first('cate_path') }}</strong>
                     </span>
                   @endif
                 </div>
               </div>
 
-              <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                <label for="password" class="col-md-4 control-label">登录密码</label>
-                <div class="col-md-6">
-                    {{ Form::text('password', '', array('placeholder' => !$model->exists ? '请输入密码' : '重新设置密码','class' => 'form-control')) }}
-                  @if ($errors->has('password'))
-                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                  @endif
-                </div>
+              <div class="form-group{{ $errors->has('parent') ? ' has-error' : '' }}">
+                  <label for="email" class="col-md-4 control-label">所属菜单</label>
+                  <div class="col-md-6">
+                      {{ Form::text('parent', null, array('placeholder' => '请输入所属菜单的id','class' => 'form-control')) }}
+                      @if ($errors->has('parent'))
+                          <span class="help-block">
+                    <strong>{{ $errors->first('parent') }}</strong>
+                </span>
+                      @endif
+                  </div>
               </div>
 
               <div class="form-group">

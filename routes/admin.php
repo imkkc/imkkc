@@ -20,14 +20,19 @@ Route::group(['prefix' => 'admin','namespace' => 'Admin'],function ($router)
 
 Route::group(['namespace' => 'Admin','middleware' => ['auth.admin:admin','menu:admin']],function ()
 {
-    //其他页面
+    //主页面
     Route::get('admin/dash', 'DashboardController@index');
 
-    //后台权限管理
+    //后台用户的路由
     Route::any('batAdmin', 'AdminController@batAdmin');
     Route::any('admin/index', 'AdminController@index');
     Route::any('admin/changeStatus', 'AdminController@changeStatus');
     Route::resource('admin', 'AdminController');
+
+    //后台菜单的路由
+    Route::any('admin-cate/index', 'CateController@index');
+    Route::any('admin-cate/changeStatus', 'CateController@changeStatus');
+    Route::resource('admin-cate', 'CateController');
 
 });
 

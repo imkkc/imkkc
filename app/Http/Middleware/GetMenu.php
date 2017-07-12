@@ -50,12 +50,18 @@ class GetMenu
             ),
             array(
                 'name' => '账号管理',
-                'link' => '/Admin/account/list',
+                'link' => '/admin/dash',
                 'icon' => 'fa-group',
                 'sub'  => array(
                     array(
-                        'name' => '帐号列表',
-                        'link' => '/Admin/admin/',
+                        'name' => '用户列表',
+                        'link' => '/admin/index',
+                        'icon' => 'fa-circle-o',
+                        'sub'  => array(),
+                    ),
+                    array(
+                        'name' => '菜单列表',
+                        'link' => '/admin-cate/index',
                         'icon' => 'fa-circle-o',
                         'sub'  => array(),
                     ),

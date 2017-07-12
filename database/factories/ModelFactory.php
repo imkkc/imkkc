@@ -32,3 +32,10 @@ $factory->define(App\Models\Admin::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+$factory->define(App\Models\AdminCate::class, function (Faker\Generator $faker) {
+    return [
+        'cate_name' => $faker->name,
+        'cate_path' => $faker->title,
+    ];
+});

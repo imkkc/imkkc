@@ -47,7 +47,7 @@
             <a href="#"><i class="fa {{$item['icon']}}"></i><span>{{$item['name']}}</span><i class="fa fa-angle-left pull-right"></i></a>
             <ul class="treeview-menu">
               @foreach($item['sub'] as $sub)
-              <li><a href="#"><i class="fa {{$sub['icon']}}"></i>{{$sub['name']}}</a></li>
+              <li><a href="{{$sub['link']}}"><i class="fa {{$sub['icon']}}"></i>{{$sub['name']}}</a></li>
               @endforeach
             </ul>
           </li>
