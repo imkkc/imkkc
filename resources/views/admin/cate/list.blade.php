@@ -33,7 +33,7 @@
             <a class="btn btn-primary"><i class="glyphicon glyphicon-search"></i>搜索</a>
             <a class="btn btn-default float-right" data-toggle="tooltip" data-original-title="关闭勾选菜单" onclick="batChangeStatus('close')"><i class="glyphicon glyphicon-pause"></i> 关闭</a>
             <a class="btn btn-default float-right" data-toggle="tooltip" data-original-title="开启勾选菜单" onclick="batChangeStatus('open')"><i class="glyphicon glyphicon-play"></i> 开启</a>
-            <a class="btn btn-default float-right" data-toggle="tooltip" data-original-title="添加新的菜单" href="{{url('/admin/create')}}"><i class="fa fa-plus"></i> 添加</a>
+            <a class="btn btn-default float-right" data-toggle="tooltip" data-original-title="添加新的菜单" href="{{url('/admin-cate/create')}}"><i class="fa fa-plus"></i> 添加</a>
             {!! Form::close() !!}
           </div>
 
