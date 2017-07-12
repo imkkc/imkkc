@@ -33,8 +33,8 @@
             {!! Form::label('title','状态:') !!}
             {!! Form::select('status', [1000=>'请选择状态',1=>'开启', 0 =>'关闭'],null,['placeholder' => '请选择状态','class'=>'form-control width-10']) !!}
             <a class="btn btn-primary"><i class="glyphicon glyphicon-search"></i>搜索</a>
-            <a class="btn btn-default float-right" data-toggle="tooltip" data-original-title="关闭勾选的用户" onclick="batChangeStatus('close')"><i class="glyphicon glyphicon-pause"></i> 关闭</a>
-            <a class="btn btn-default float-right" data-toggle="tooltip" data-original-title="开启勾选的用户" onclick="batChangeStatus('open')"><i class="glyphicon glyphicon-play"></i> 开启</a>
+            <a class="btn btn-default float-right" data-toggle="tooltip" data-original-title="关闭勾选用户" onclick="batChangeStatus('close')"><i class="glyphicon glyphicon-pause"></i> 关闭</a>
+            <a class="btn btn-default float-right" data-toggle="tooltip" data-original-title="开启勾选用户" onclick="batChangeStatus('open')"><i class="glyphicon glyphicon-play"></i> 开启</a>
             <a class="btn btn-default float-right" data-toggle="tooltip" data-original-title="添加新的用户" href="{{url('/admin/create')}}"><i class="glyphicon glyphicon-user"></i> 添加</a>
             {!! Form::close() !!}
           </div>
@@ -145,6 +145,7 @@
         var checkItems = $('input[name=check_item]:checked').length;
         if (checkItems <= 0) {
             alert('请先打勾选项!');
+          //  doAlert('请先打勾选项!请先打勾选项!请先打勾选项!请先打勾选项!');
             return false;
         }
         if(window.confirm(msg)){

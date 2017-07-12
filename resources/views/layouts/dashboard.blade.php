@@ -55,7 +55,7 @@ scratch. This page gets rid of all links and provides the needed markup only.--}
 
       <!-- Footer -->
       @include('layouts.footer')
-
+      @include('layouts.modal')
     </div><!-- ./wrapper -->
 
     <!-- REQUIRED JS SCRIPTS -->
