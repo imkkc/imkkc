@@ -29,7 +29,15 @@ class DashboardController extends Controller
     {
         //dd('后台首页，当前用户名：'.auth('admin')->user()->name);
         //$data['left_menu'] = $this->left_menu;
-        $data['tasks'] = [
+        $page = [
+            'page_title' => '用户列表',
+            'page_description' => '后台管理者中心',
+            'top_menu' => [
+                ['link' => '/admin/dash', 'name' => '首页'],
+                ['link' => '/admin/index', 'name' => '帐号管理'],
+            ]
+        ];
+        $tasks = [
             [
                 'name'     => 'Design New Dashboard',
                 'progress' => '87',
@@ -57,7 +65,8 @@ class DashboardController extends Controller
             ]
         ];
         
-        return view('admin.home')->with($data);
+       // return view('admin.home')->with($data);
+        return view('admin.home', compact('tasks', 'page'));
     }
     
 

@@ -35,12 +35,9 @@ class AdminController extends Controller
         if (isset($pageQuery['status']) && in_array($pageQuery['status'],[0,1])) {
             $where[] = array('status','=',$pageQuery['status']);
         }
-        $pageQuery['perPage'] = $pageQuery['perPage'] ? $pageQuery['perPage'] : 10;
+        $pageQuery['perPage'] = $request->get('perPage') ? $pageQuery['perPage'] : 10;
         $model = Admin::where($where)->paginate($pageQuery['perPage']);
-        $page = [
-            'page_title' => '用户列表',
-            'page_description' => '后台管理者中心',
-        ];
+        $page = pageNav('帐号管理','用户列表');
         $status = Admin::$status;
         $option = Admin::$option;
         return view('admin.admin.list', compact('model', 'page', 'pageQuery','status','option'));
@@ -48,10 +45,7 @@ class AdminController extends Controller
 
     public function create(){
         $model = new Admin();
-        $page = [
-            'page_title' => '用户添加',
-            'page_description' => '后台管理者中心',
-        ];
+        $page = pageNav('帐号管理','添加用户');
         return view('admin.admin.form',compact('model','page'));
     }
 
@@ -59,42 +53,56 @@ class AdminController extends Controller
         if (!is_numeric($id)) {
             abort(503);
         }
-        $page = [
-            'page_title' => '用户修改',
-            'page_description' => '后台管理者中心',
-        ];
+        $page = pageNav('帐号管理','用户修改');
         $model = Admin::find($id);
         return view('admin.admin.form',compact('model','page'));
     }
 
     public function store(Request $request){
         $input = $request->input();
-        dd($input);
+        $validator = Validator::make($input,[
+            'name'=> 'required|max:30',
+            'email' => 'required|email|max:100|unique:admins',
+            'password' => 'required|max:18',
+        ]);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
+        }
         $admin = [
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => bcrypt($input['password']),
         ];
-        $admin = factory(Admin::class)->create($admin);
-        dd($admin);
+        Admin::create($admin);
+        //return Redirect::route('admin.index');
+        return Redirect::back()->with('message', ' 添加成功 ! ');
     }
 
     public function update(Request $request, $id) {
-        $model = Admin::find($id);
-        $data = $model->toArray();
-        $input = $request->toArray();
+        $input = $request->input();
         $validator = Validator::make($input,[
-            'name'=> 'required|max:1',
-            'headline_tags'=> 'required|max:128',
-            'target_id'=> 'max:255',
+            'name'=> 'required|max:30',
+            //'email' => 'required|email|max:100|unique:admins',
+            'password' => 'max:18',
         ]);
         if ($validator->fails()) {
-            return Redirect::back()
-                ->withErrors($validator)
-                ->withInput();
+            return Redirect::back()->withErrors($validator)->withInput();
         }
-        return $validator->errors()->all();
-        abort(403);
+        $model = Admin::find($id);
+        if (!$model) {
+            return Redirect::back()->with('errorMessage', ' 没有符合的信息 ! ');
+        }
+        $model->name = $input['name'];
+        $model->email = $input['email'];
+        if ($input['password']) {
+            $model->password = $input['password'];
+        }
+        if ($model->save()) {
+            return Redirect::back()->with('message', ' 修改成功 ! '. date('y-m-d H:i:s',time()));
+        }else{
+            return Redirect::back()->with('errorMessage', ' 修改失败了 ! ');
+        }
+        //abort(403);
     }
 
 /*    public function batAdmin(){

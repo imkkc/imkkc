@@ -16,7 +16,24 @@
         <!-- /.box-header -->
         <div class="box-body">
           <div class="panel-body">
-              @if (!$model->exists)
+              @if(Session::has('message'))
+                  <div class="alert alert-info alert-dismissable" style="text-align: center;">
+                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                          &times;
+                      </button>
+                      {{Session::get('message')}}
+                  </div>
+              @endif
+              @if(Session::has('errorMessage'))
+                  <div class="alert alert-error alert-dismissable" style="text-align: center;">
+                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                          &times;
+                      </button>
+                      {{Session::get('errorMessage')}}
+                  </div>
+              @endif
+
+          @if (!$model->exists)
                   {{ Form::open(array('route' => array('admin.store'), 'files' => true, 'class' => 'form-horizontal')) }}
               @else
                   {{ Form::model($model, array('method' => 'PATCH', 'route' => array('admin.update', $model->id), 'files' => true, 'class' => 'form-horizontal')) }}

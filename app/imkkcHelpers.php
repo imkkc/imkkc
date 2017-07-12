@@ -12,8 +12,17 @@
  *
  */
 
-if(!function_exists('kkc')){
-    function kkc(){
-        return 'this is test imkkcHelpers';
+if (!function_exists('kkc')) {
+    function pageNav($menu_node, $page_title)
+    {
+        $page = [
+            'page_title'       => $page_title,
+            'page_description' => '后台管理者中心',
+            'top_menu'         => [
+                ['link' => '/admin/dash', 'name' => '首页'],
+                ['link' => '/admin/index', 'name' => $menu_node],
+            ]
+        ];
+        return $page;
     }
 }

@@ -13,8 +13,9 @@
 
     <!-- You can dynamically generate breadcrumbs here -->
     <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-        <li><a href="#"><i class="fa fa-dashboard"></i> 帐号管理</a></li>
-        <li class="active">用户列表</li>
+        @foreach ($page['top_menu'] as $item)
+            <li><a href="{{$item['link']}}"><i class="fa fa-dashboard"></i> {{$item['name']}}</a></li>
+        @endforeach
+        <li class="active">{{$page['page_title']}}</li>
     </ol>
 </section>
