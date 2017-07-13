@@ -112,17 +112,28 @@ class CateController extends Controller
     public function update(Request $request, $id)
     {
         $input = $request->input();
-        $validator = Validator::make($input,[
-            'cate_name' => $input['cate_name'],
-            'cate_path' => $input['cate_path'],
-            'parent' => $input['parent'],
-        ]);
-        if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
-        }
+
         $model = AdminCate::find($id);
         if (!$model) {
             return Redirect::back()->with('errorMessage', ' 没有符合的信息 ! ');
+        }
+        if ($input['cate_name'] == $model->cate_name  &&  $input['cate_path'] == $model->cate_path)
+        {
+            return Redirect::back()->with('message', ' 没有任何信息变化 ! ');
+        }
+        $match = [
+            'cate_name'=> 'required|max:30',
+            'cate_path' => 'required|max:100',
+        ];
+        if ($model->cate_name != $input['cate_name']) {
+            $match['cate_name'] .= '|unique:admin_cates';
+        }
+        if ($model->cate_path != $input['cate_path']) {
+            $match['cate_path'] .= '|unique:admin_cates';
+        }
+        $validator = Validator::make($input,$match);
+        if ($validator->fails()) {
+            return Redirect::back()->withErrors($validator)->withInput();
         }
         $model->cate_name = $input['cate_name'];
         $model->cate_path = $input['cate_path'];

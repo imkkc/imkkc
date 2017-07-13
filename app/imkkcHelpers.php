@@ -26,3 +26,24 @@ if (!function_exists('kkc')) {
         return $page;
     }
 }
+
+if (!function_exists("get_file_name"))
+{
+    /**
+     * return random key
+     * @return string
+     */
+    function get_file_name($path) {
+        $handle = opendir($path);
+        $file_name = array();
+        while (false !== ($file = readdir($handle)))
+        {
+            if ($file != "." && $file != "..") {
+                $fileArr = explode('.',$file);
+                $file_name[] = $fileArr[0];
+            }
+        }
+        closedir($handle);
+        return $file_name;
+    }
+}
