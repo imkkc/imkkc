@@ -87,7 +87,7 @@ class CateController extends Controller
             abort(403,'参数有误');
         }
         $page = pageNav('帐号管理','用户修改');
-        $model = AdminCate::find($id);
+        $model = AdminCate::findOrFail($id);
         return view('admin.cate.form',compact('model','page'));
     }
 
