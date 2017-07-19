@@ -60,7 +60,7 @@ class GetMenu
                         'sub'  => array(),
                     ),
                     array(
-                        'name' => '菜单列表',
+                        'name' => '权限菜单',
                         'link' => '/admin-cate/index',
                         'icon' => 'fa-circle-o',
                         'sub'  => array(),
