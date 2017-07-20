@@ -13,11 +13,11 @@
  */
 
 if (!function_exists('kkc')) {
-    function pageNav($menu_node, $page_title)
+    function pageNav($menu_node, $page_title,$page_description='后台管理者中心')
     {
         $page = [
             'page_title'       => $page_title,
-            'page_description' => '后台管理者中心',
+            'page_description' => $page_description,
             'top_menu'         => [
                 ['link' => '/admin/dash', 'name' => '首页'],
                 ['link' => '/admin/index', 'name' => $menu_node],

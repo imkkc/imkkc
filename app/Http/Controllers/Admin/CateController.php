@@ -31,7 +31,7 @@ class CateController extends Controller
         }
         $pageQuery['perPage'] = $request->get('perPage') ? $pageQuery['perPage'] : 10;
         $model = AdminCate::where($where)->paginate($pageQuery['perPage']);
-        $page = pageNav('帐号管理','权限菜单');
+        $page = pageNav('帐号管理','权限菜单','选中一个节点进行操作');
         $status = AdminCate::$status;
         $option = AdminCate::$option;
         return view('admin.cate.list', compact('model', 'page', 'pageQuery','status','option'));
