@@ -47,3 +47,30 @@ if (!function_exists("get_file_name"))
         return $file_name;
     }
 }
+
+if (!function_exists("getTree")) {
+    /**
+     * getTree无限递归函数
+     * @param $data
+     * @param $field_id
+     * @param $field_pid
+     * @param int $pid
+     * @return array
+     * @nodes 变量，保存子集数据
+     */
+    function getTree($data, $pId)
+    {
+        $tree = '';
+        foreach($data as $k => $v)
+        {
+            if($v['parent'] == $pId)
+            {
+                //父亲找到儿子
+                $v['nodes'] = getTree($data, $v['id']);
+                $tree[] = $v;
+                //unset($data[$k]);
+            }
+        }
+        return $tree;
+    }
+}

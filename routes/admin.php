@@ -31,6 +31,9 @@ Route::group(['namespace' => 'Admin','middleware' => ['auth.admin:admin','menu:a
 
     //后台菜单的路由
     Route::any('admin-cate/index', 'CateController@index');
+    Route::any('admin-cate/getTree', 'CateController@getTree');
+    Route::any('admin-cate/addTree', 'CateController@addTree');
+    Route::any('admin-cate/editTree', 'CateController@editTree');
     Route::any('admin-cate/changeStatus', 'CateController@changeStatus');
     Route::resource('admin-cate', 'CateController');
 

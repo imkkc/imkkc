@@ -43,6 +43,34 @@
                     <div class="col-md-5">
                         <div class="panel panel-primary ">
                             <div class="panel-heading">
+                                <h3 class="panel-title">添加区</h3>
+                            </div>
+                            <!--编辑操作权限 start-->
+                            <div class="panel-body ">
+                                <div  id="addShow">
+                                    <div>
+                                        <div class="input-group margin-t-5">
+                                            <span class="input-group-addon" >权限名称:</span>
+                                            <input id="addName" type="text"  class="form-control" />
+                                        </div>
+                                        <div class="input-group margin-t-5">
+                                            <span class="input-group-addon" >菜单链接:</span>
+                                            <input id="addLink" type="text"  class="form-control" />
+                                        </div>
+                                        <div class="input-group margin-t-5">
+                                            <span class="input-group-addon" >所属上级:</span>
+                                            <input id="addParentText" type="text"  class="form-control" />
+                                            <input id="addParentID" type="hidden"  class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div style="margin-top: 10px;">
+                                        <input id="Save" class="btn btn-primary" type="button" value="确认添加" />
+                                    </div>
+                                </div>
+                            </div><!--编辑操作权限 end-->
+                        </div>
+                        <div class="panel panel-primary ">
+                            <div class="panel-heading">
                                 <h3 class="panel-title">编辑区（修改选中节点）</h3>
                             </div>
                             <!--编辑操作权限 start-->
@@ -59,7 +87,9 @@
                                         </div>
                                         <div class="input-group margin-t-5">
                                             <span class="input-group-addon" >所属上级:</span>
-                                            <input id="editParent" type="text"  class="form-control" />
+                                            <input id="editParentText" type="text"  class="form-control" />
+                                            <input id="editParentID" type="hidden"  class="form-control" />
+                                            <input id="treeID" type="hidden"  class="form-control" />
                                         </div>
                                     </div>
                                     <div style="margin-top: 10px;">
@@ -74,41 +104,6 @@
                     </div>
                 </div>
             </div>
-            <!-- 弹出框 新增权限 start -->
-            <div class="modal fade" id="addOperation-dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-
-                    <div class="modal-content radius_5">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">新增节点</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div group="" item="add">
-                                <div class="input-group margin-t-5">
-                                    <span class="input-group-addon">权限名称:</span>
-                                    <input id="addName" type="text" class="form-control" />
-                                </div>
-                                <div class="input-group margin-t-5">
-                                    <span class="input-group-addon">菜单链接:</span>
-                                    <input id="addLink" type="text" class="form-control" />
-                                </div>
-                                <div class="input-group margin-t-5">
-                                    <span class="input-group-addon">所属上级:</span>
-                                    <input id="addParent" type="text" class="form-control" />
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="modal-footer">
-                            <button id="Save" type="button" class="btn btn-primary">保存</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- 弹出框 新增权限 end -->
 
         </div>
         <!-- /.box-body -->
@@ -121,11 +116,8 @@
 
 @endsection
 @section('js')
-
-
-    <script type="text/javascript" src="{{url('packages/bootstrap-treeview/bootstrap-treeview.js')}}"></script>
-    <script type="text/javascript" src="{{url('packages/bootstrap-dialog/bootstrap-dialog.min.js')}}"></script>
-<!-- page script -->
+<script type="text/javascript" src="{{url('packages/bootstrap-treeview/bootstrap-treeview.js')}}"></script>
+<script type="text/javascript" src="{{url('packages/bootstrap-dialog/bootstrap-dialog.min.js')}}"></script>
 <script>
     function changeStatus(id) {
         $.post('{{url('/admin-cate/changeStatus')}}',{ids:id},function(data) {
@@ -176,18 +168,42 @@
             onLoad();
 
             BindEvent();
+
             //页面加载
             function onLoad()
             {
-                //渲染树
-                $('#left-tree').treeview({
-                    data: getTree(),
-                    levels: 1,
-                    onNodeSelected:function(event, node){
-                        $('#editName').val(node.text);
-                        $('#editLink').val(node.link);
-                    },
-                    showCheckbox:false//是否显示多选
+                $.ajax({
+                    type : "post",
+                    url :'{{url('/admin-cate/getTree')}}',
+                    data : {},
+                    //async : false, //同步，但是同步是要同步请求将锁住浏览器，必须等待请求完成才可以执行其他
+                    success : function(data){
+                        if(data.status == 200){
+                            //渲染树
+                            $('#left-tree').treeview({
+                                data: data.info,
+                                levels: 1,
+                                onNodeSelected:function(event, node){
+                                    //编辑区
+                                    $('#editName').val(node.text);
+                                    $('#editLink').val(node.link);
+                                    $('#treeID').val(node.id);
+                                    var parent = $('#left-tree').treeview('getParents',node)[0];
+                                    console.log(parent);
+                                    $('#editParentID').val(parent.id);
+                                    $('#editParentText').val(parent.text);
+                                    //添加区
+                                    $('#addName').val('');
+                                    $('#addLink').val('');
+                                    $('#addParentID').val(node.id);
+                                    $('#addParentText').val(node.text);
+                                },
+                                showCheckbox:false//是否显示多选
+                            });
+                        }else{
+                            alert('没有数据');
+                        }
+                    }
                 });
             }
 
@@ -196,41 +212,63 @@
             {
                 //保存-新增
                 $("#Save").click(function () {
-                    $('#addOperation-dialog').modal('hide')
-                    //静态添加节点
-                    var parentNode = $('#left-tree').treeview('getSelected');
-                    var node = {
-                        text: $('#addName').val()
-                    };
-                    $('#left-tree').treeview('addNode', [node, parentNode]);
+                    $.ajax({
+                        type : "post",
+                        url :'{{url('/admin-cate/addTree')}}',
+                        data : {
+                            text : $('#addName').val(),
+                            parent : $('#addParentID').val(),
+                            link : $('#addLink').val()
+                        },
+                        success : function(data){
+                            if(data.status == 200){
+                                //静态添加节点
+                                var parentNode = $('#left-tree').treeview('getSelected');
+                                var node = {
+                                    text : $('#addName').val(),
+                                    parent : $('#addParentID').val(),
+                                    link : $('#addLink').val()
+                                };
+                                $('#left-tree').treeview('addNode', [node, parentNode]);
 
+                            }else{
+                                alert('添加失败了');
+                            }
+                        }
+                    });
                 });
             }
             //保存-编辑
             $('#Edit').click(function(){
-                var node = $('#left-tree').treeview('getSelected');
-                var newNode={
-                    text:$('#editName').val(),
-                    link:$('#editLink').val()
-                };
-                $('#left-tree').treeview('updateNode', [ node, newNode]);
+                $.ajax({
+                    type : "post",
+                    url :'{{url('/admin-cate/editTree')}}',
+                    data : {
+                        id : $('#treeID').val(),
+                        text: $('#editName').val(),
+                        link: $('#editLink').val(),
+                        parent: $('#editParentID').val()
+                    },
+                    success : function(data){
+                        if(data.status == 200){
+
+                            var node = $('#left-tree').treeview('getSelected');
+                            var newNode={
+                                text: $('#editName').val(),
+                                link: $('#editLink').val(),
+                                parent: $('#editParentID').val()
+                            };
+                            $('#left-tree').treeview('updateNode', [ node, newNode]);
+
+                        }else{
+                            alert('添加失败了');
+                        }
+                    }
+                });
+
             });
 
-            //显示-添加
-            $("#btnAdd").click(function(){
-                var node = $('#left-tree').treeview('getSelected');
-                //console.log(JSON.stringify(node));
-//                if (node.length == 0) {
-//                    $.showMsgText('请选择节点');
-//                    return;
-//                }
-                $('#addName').val('');
-                $('#addLink').val('');
-                if (node.length > 0) {
-                    $('#addParent').val(node[0].text);
-                }
-                $('#addOperation-dialog').modal('show');
-            });
+
             //显示-编辑
             $("#btnEdit").click(function(){
                 var node=$('#left-tree').treeview('getSelected');
@@ -260,7 +298,6 @@
                     }
                 });
                 function del(){
-
                     $('#left-tree').treeview('removeNode', [ node, { silent: true } ]);
                 }
 
@@ -268,50 +305,6 @@
             $("#btnMove").click(function(){
                 $.showMsgText('更新中...');
             });
-
-            //获取树数据
-            function getTree(){
-                var tree = [
-                    {
-                        text: "一年级",
-                        id:"1",
-                        nodes: [
-                            {
-                                text: "一班",
-                                id:"2",
-                                nodes: [
-                                    {
-                                        text: "物理",
-                                        id:"3",
-                                        link:"abc/wuli"
-                                    },
-                                    {
-                                        text: "化学",
-                                        id:"4",
-                                        link:"abc/huaxue"
-                                    }
-                                ]
-                            },
-                            {
-                                text: "二班"
-                            }
-                        ]
-                    },
-                    {
-                        text: "二年级"
-                    },
-                    {
-                        text: "三年级"
-                    },
-                    {
-                        text: "四年级"
-                    },
-                    {
-                        text: "五年级"
-                    }
-                ];
-                return tree;
-            }
 
             /*-----页面pannel内容区高度自适应 start-----*/
             $(window).resize(function () {

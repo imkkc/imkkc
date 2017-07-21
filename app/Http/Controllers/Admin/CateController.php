@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Mockery\Exception;
+use function MongoDB\BSON\toJSON;
 
 class CateController extends Controller
 {
@@ -18,89 +19,67 @@ class CateController extends Controller
      */
     public function index(Request $request)
     {
-        $pageQuery = $request->toArray();
-        $where     = array();
-        if (isset($pageQuery['cate_name']) && $pageQuery['cate_name']) {
-            $where[] = array('cate_name','like','%'.$pageQuery['cate_name'].'%');
-        }
-        if (isset($pageQuery['cate_path']) && $pageQuery['cate_path']) {
-            $where[] = array('cate_path','like','%'.$pageQuery['cate_path'].'%');
-        }
-        if (isset($pageQuery['status']) && in_array($pageQuery['status'],[0,1])) {
-            $where[] = array('status','=',$pageQuery['status']);
-        }
-        $pageQuery['perPage'] = $request->get('perPage') ? $pageQuery['perPage'] : 10;
-        $model = AdminCate::where($where)->paginate($pageQuery['perPage']);
+//        $pageQuery = $request->toArray();
+//        $where     = array();
+//        if (isset($pageQuery['cate_name']) && $pageQuery['cate_name']) {
+//            $where[] = array('cate_name','like','%'.$pageQuery['cate_name'].'%');
+//        }
+//        if (isset($pageQuery['cate_path']) && $pageQuery['cate_path']) {
+//            $where[] = array('cate_path','like','%'.$pageQuery['cate_path'].'%');
+//        }
+//        if (isset($pageQuery['status']) && in_array($pageQuery['status'],[0,1])) {
+//            $where[] = array('status','=',$pageQuery['status']);
+//        }
+//        $pageQuery['perPage'] = $request->get('perPage') ? $pageQuery['perPage'] : 10;
+//        $model = AdminCate::where($where)->paginate($pageQuery['perPage']);
+//        $page = pageNav('帐号管理','权限菜单','选中一个节点进行操作');
+//        $status = AdminCate::$status;
+//        $option = AdminCate::$option;
+//        return view('admin.cate.list', compact('model', 'page', 'pageQuery','status','option'));
         $page = pageNav('帐号管理','权限菜单','选中一个节点进行操作');
-        $status = AdminCate::$status;
-        $option = AdminCate::$option;
-        return view('admin.cate.list', compact('model', 'page', 'pageQuery','status','option'));
+        $list = AdminCate::all()->toArray();
+        $tree = json_encode($list);
+        return view('admin.cate.list', compact('page'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $model = new AdminCate();
-        $page = pageNav('帐号管理','添加菜单');
-        return view('admin.cate.form',compact('model','page'));
+    public function getTree(){
+        $list = AdminCate::all()->toArray();
+        $tree = getTree($list,0);
+        return response()->json(['status' => 200, 'info' => $tree]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
+    public function addTree(Request $request){
         $input = $request->input();
-        $validator = Validator::make($input,[
-            'cate_name'=> 'required|max:30|unique:admin_cates',
-            'cate_path' => 'required|max:100|unique:admin_cates',
-            'parent' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
-        }
+//        $validator = Validator::make($input,[
+//            'cate_name'=> 'required|max:30|unique:admin_cates',
+//            'cate_path' => 'required|max:100|unique:admin_cates',
+//            'parent' => 'required',
+//        ]);
+//        if ($validator->fails()) {
+//            return Redirect::back()->withErrors($validator)->withInput();
+//        }
         $admin = [
-            'cate_name' => $input['cate_name'],
-            'cate_path' => $input['cate_path'],
+            'text' => $input['text'],
+            'link' => $input['link'],
             'parent' => $input['parent'],
         ];
         AdminCate::create($admin);
-        return Redirect::back()->with('message', ' 添加成功 ! ');
+        return response()->json(['status' => 200, 'info' => '添加成功']);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\AdminCate  $adminCate
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        if (!is_numeric($id)) {
-            abort(403,'参数有误');
-        }
-        $page = pageNav('帐号管理','用户修改');
-        $model = AdminCate::findOrFail($id);
-        return view('admin.cate.form',compact('model','page'));
+    public function editTree(Request $request){
+        $input = $request->input();
+        $model = AdminCate::find($input['id']);
+
+        $model->text = $input['text'];
+        $model->link = $input['link'];
+        $model->parent = $input['parent'];
+        if ($model->save()) {
+            return response()->json(['status' => 200, 'info' => '修改成功']);
+        }else{
+            return response()->json(['status' => 110, 'info' => '修改失败了']);        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\AdminCate  $adminCate
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(AdminCate $adminCate)
-    {
-        abort(503,'没有这个功能');
-    }
 
     /**
      * Update the specified resource in storage.
