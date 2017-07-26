@@ -52,8 +52,6 @@ if (!function_exists("getTree")) {
     /**
      * getTree无限递归函数
      * @param $data
-     * @param $field_id
-     * @param $field_pid
      * @param int $pid
      * @return array
      * @nodes 变量，保存子集数据
@@ -70,6 +68,27 @@ if (!function_exists("getTree")) {
                 $tree[] = $v;
                 //unset($data[$k]);
             }
+        }
+        return $tree;
+    }
+}
+
+if(!function_exists("leftMenu")){
+    function leftMenu($left_menu) {
+        $tree = '';
+        foreach($left_menu as $item)
+        {
+            $tree .= '<li class="treeview">';
+            if($item['sub'])
+            {
+                $tree .= '<a href="'.$item['link'].'"><i class="fa '.$item['icon'].'"></i><span>'.$item['name'].'</span><i class="fa fa-angle-left pull-right"></i></a>';
+                $tree .= '<ul class="treeview-menu">';
+                $tree .= leftMenu($item['sub']) ;
+                $tree .= '</ul>';
+            }else{
+                $tree .= '<a href="'.$item['link'].'"><i class="fa '.$item['icon'].'"></i><span>'.$item['name'].'</span></a>';
+            }
+            $tree .= '</li>';
         }
         return $tree;
     }

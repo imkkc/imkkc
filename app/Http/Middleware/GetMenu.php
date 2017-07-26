@@ -57,7 +57,21 @@ class GetMenu
                         'name' => '用户列表',
                         'link' => '/admin/index',
                         'icon' => 'fa-circle-o',
-                        'sub'  => array(),
+                        'sub'  => array(
+                            array(
+                                'name' => '订单查询',
+                                'link' => '/Admin/orders/index',
+                                'icon' => 'fa-circle-o',
+                                'sub'  => array(
+                                    array(
+                                        'name' => '订单查询',
+                                        'link' => '/Admin/orders/index',
+                                        'icon' => 'fa-circle-o',
+                                        'sub'  => array(),
+                                    ),
+                                ),
+                            ),
+                        ),
                     ),
                     array(
                         'name' => '权限菜单',

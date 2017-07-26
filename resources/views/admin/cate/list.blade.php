@@ -38,7 +38,7 @@
                             </div>
                             <!--添加操作权限 start-->
                             <div class="panel-body ">
-                                <div  id="addShow">
+                                <div id="addShow">
                                     <div>
                                         <div class="input-group margin-t-5">
                                             <span class="input-group-addon" >权限名称:</span>

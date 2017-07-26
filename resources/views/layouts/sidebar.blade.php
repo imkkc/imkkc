@@ -41,7 +41,8 @@
         </ul>
       </li>
         <?php $left_menu=Request::get('left_menu'); ?>
-      @foreach($left_menu as $item)
+      {!! leftMenu($left_menu) !!}
+{{--      @foreach($left_menu as $item)
         @if($item['sub'])
           <li class="treeview">
             <a href="#"><i class="fa {{$item['icon']}}"></i><span>{{$item['name']}}</span><i class="fa fa-angle-left pull-right"></i></a>
@@ -54,7 +55,7 @@
         @else
           <li class="treeview"><a href="#"><i class="fa {{$item['icon']}}"></i><span>{{$item['name']}}</span></a></li>
         @endif
-      @endforeach
+      @endforeach--}}
 
     </ul>
     <!-- /.sidebar-menu -->
