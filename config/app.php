@@ -52,7 +52,7 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
-    'plugins' => '/packages/admin-lte/plugins/',
+    'bower_components' => '/packages/AdminLTE-2.4.0/bower_components/',
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

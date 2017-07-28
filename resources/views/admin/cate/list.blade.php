@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.AdminLTE-2-4-0')
 @section('css')
 <!-- DataTables -->
 <link rel="stylesheet" href="{{url('packages/bootstrap-treeview/bootstrap-treeview.min.css')}}">

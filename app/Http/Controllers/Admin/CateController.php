@@ -17,28 +17,9 @@ class CateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-//        $pageQuery = $request->toArray();
-//        $where     = array();
-//        if (isset($pageQuery['cate_name']) && $pageQuery['cate_name']) {
-//            $where[] = array('cate_name','like','%'.$pageQuery['cate_name'].'%');
-//        }
-//        if (isset($pageQuery['cate_path']) && $pageQuery['cate_path']) {
-//            $where[] = array('cate_path','like','%'.$pageQuery['cate_path'].'%');
-//        }
-//        if (isset($pageQuery['status']) && in_array($pageQuery['status'],[0,1])) {
-//            $where[] = array('status','=',$pageQuery['status']);
-//        }
-//        $pageQuery['perPage'] = $request->get('perPage') ? $pageQuery['perPage'] : 10;
-//        $model = AdminCate::where($where)->paginate($pageQuery['perPage']);
-//        $page = pageNav('帐号管理','权限菜单','选中一个节点进行操作');
-//        $status = AdminCate::$status;
-//        $option = AdminCate::$option;
-//        return view('admin.cate.list', compact('model', 'page', 'pageQuery','status','option'));
         $page = pageNav('帐号管理','权限菜单','选中一个节点进行操作');
-        $list = AdminCate::all()->toArray();
-        $tree = json_encode($list);
         return view('admin.cate.list', compact('page'));
     }
 
@@ -50,14 +31,6 @@ class CateController extends Controller
 
     public function addTree(Request $request){
         $input = $request->input();
-//        $validator = Validator::make($input,[
-//            'cate_name'=> 'required|max:30|unique:admin_cates',
-//            'cate_path' => 'required|max:100|unique:admin_cates',
-//            'parent' => 'required',
-//        ]);
-//        if ($validator->fails()) {
-//            return Redirect::back()->withErrors($validator)->withInput();
-//        }
         $admin = [
             'text' => $input['text'],
             'link' => $input['link'],

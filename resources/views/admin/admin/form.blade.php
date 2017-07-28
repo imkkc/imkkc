@@ -1,10 +1,5 @@
 @extends('layouts.dashboard')
 
-@section('css')
-<!-- DataTables -->
-<link rel="stylesheet" href="{{ config('app.plugins')."datatables/dataTables.bootstrap.css"}}">
-@endsection
-
 @section('content')
   <div class="row">
     <div class="col-xs-12">
@@ -92,28 +87,4 @@
     <!-- /.col -->
   </div>
   <!-- /.row -->
-@endsection
-@section('js')
-<!-- DataTables -->
-<script src="{{config('app.plugins').'datatables/jquery.dataTables.min.js'}}"></script>
-<script src="{{config('app.plugins').'datatables/dataTables.bootstrap.min.js'}}"></script>
-<!-- SlimScroll -->
-<script src="{{config('app.plugins')."slimScroll/jquery.slimscroll.min.js" }}"></script>
-<!-- FastClick -->
-<script src="{{config('app.plugins')."fastclick/fastclick.js"}}"></script>
-
-<!-- page script -->
-<script>
-    $(function () {
-//        $("#example1").DataTable();
-        $('#example1').DataTable({
-            "paging": false,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": false,
-            "autoWidth": false
-        });
-    });
-</script>
 @endsection
