@@ -78,17 +78,21 @@ if(!function_exists("leftMenu")){
         $tree = '';
         foreach($left_menu as $item)
         {
-            $tree .= '<li class="treeview">';
+
             if($item['sub'])
             {
-                $tree .= '<a href="'.$item['link'].'"><i class="fa '.$item['icon'].'"></i><span>'.$item['name'].'</span><i class="fa fa-angle-left pull-right"></i></a>';
+                $tree .= '<li class="treeview">';
+                $tree .= '<a href="'.$item['link'].'"><i class="fa '.$item['icon'].'"></i><span>'.$item['name'].'</span><span class="pull-right-container"><i class="fa fa-angle-left pull-right"></i></span></a>';
                 $tree .= '<ul class="treeview-menu">';
                 $tree .= leftMenu($item['sub']) ;
                 $tree .= '</ul>';
+                $tree .= '</li>';
             }else{
-                $tree .= '<a href="'.$item['link'].'"><i class="fa '.$item['icon'].'"></i><span>'.$item['name'].'</span></a>';
+                $tree .= '<li>';
+                $tree .= '<a href="'.$item['link'].'"><i class="fa '.$item['icon'].'"></i>'.$item['name'].'</a>';
+                $tree .= '</li>';
             }
-            $tree .= '</li>';
+
         }
         return $tree;
     }

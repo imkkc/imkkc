@@ -28,16 +28,18 @@
     <!-- /.search form -->
 
     <!-- Sidebar Menu -->
-    <ul class="sidebar-menu">
+    <ul class="sidebar-menu" data-widget="tree">
       <li class="header">HEADER</li>
-      <!-- Optionally, you can add icons to the links -->
-      <li class="treeview active"><a href="#"><i class="fa fa-chain-broken"></i><span>Link</span></a></li>
-      <li class="treeview"><a href="#"><i class="fa fa-files-o"></i><span>Another Link</span></a></li>
       <li class="treeview">
-        <a href="#"><i class="fa fa-slideshare"></i><span>Multilevel</span> <i class="fa fa-angle-left pull-right"></i></a>
+        <a href="#">
+          <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+          <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+        </a>
         <ul class="treeview-menu">
-          <li><a href="#">Link in level 2</a></li>
-          <li><a href="#">Link in level 2</a></li>
+          <li><a href="/admin/index"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
+          <li><a href="/admin-cate/index"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
         </ul>
       </li>
         <?php $left_menu=Request::get('left_menu'); ?>

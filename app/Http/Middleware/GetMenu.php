@@ -50,7 +50,7 @@ class GetMenu
             ),
             array(
                 'name' => '账号管理',
-                'link' => '/admin/dash',
+                'link' => '#',
                 'icon' => 'fa-group',
                 'sub'  => array(
                     array(
@@ -58,19 +58,7 @@ class GetMenu
                         'link' => '/admin/index',
                         'icon' => 'fa-circle-o',
                         'sub'  => array(
-                            array(
-                                'name' => '订单查询',
-                                'link' => '/Admin/orders/index',
-                                'icon' => 'fa-circle-o',
-                                'sub'  => array(
-                                    array(
-                                        'name' => '订单查询',
-                                        'link' => '/Admin/orders/index',
-                                        'icon' => 'fa-circle-o',
-                                        'sub'  => array(),
-                                    ),
-                                ),
-                            ),
+
                         ),
                     ),
                     array(
