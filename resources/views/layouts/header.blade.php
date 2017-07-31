@@ -29,7 +29,7 @@
                   <a href="#">
                     <div class="pull-left">
                       <!-- User Image -->
-                      <img src="{{ asset("/packages/admin-lte/dist/img/user2-160x160.jpg") }}" class="img-circle" alt="User Image"/>
+                      <img src="{{ asset("/packages/AdminLTE-2.4.0/dist/img/user2-160x160.jpg") }}" class="img-circle" alt="User Image"/>
                     </div>
                     <!-- Message title and timestamp -->
                     <h4>
@@ -108,14 +108,14 @@
           <!-- Menu Toggle Button -->
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             <!-- The user image in the navbar-->
-            <img src="{{ asset("/packages/admin-lte/dist/img/user2-160x160.jpg") }}" class="user-image" alt="User Image"/>
+            <img src="{{ asset("/packages/AdminLTE-2.4.0/dist/img/user2-160x160.jpg") }}" class="user-image" alt="User Image"/>
             <!-- hidden-xs hides the username on small devices so only the image appears. -->
             <span class="hidden-xs">{{ auth('admin')->user()->name }}</span>
           </a>
           <ul class="dropdown-menu">
             <!-- The user image in the menu -->
             <li class="user-header">
-              <img src="{{ asset("/packages/admin-lte/dist/img/user2-160x160.jpg") }}" style="width:70px;height:70px;" class="img-circle" alt="User Image" />
+              <img src="{{ asset("/packages/AdminLTE-2.4.0/dist/img/user2-160x160.jpg") }}" style="width:70px;height:70px;" class="img-circle" alt="User Image" />
               <p>
                 <small>{{ auth('admin')->user()->name }} - 角色介绍</small>
                 <small>用户管理、内容审核、内容发布、广播发布、财务查看、数据管理、权限审批、公告查询、紧急处理</small>

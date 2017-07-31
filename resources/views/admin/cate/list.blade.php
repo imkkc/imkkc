@@ -171,7 +171,6 @@
 @endsection
 @section('js')
 <script type="text/javascript" src="{{url('packages/bootstrap-treeview/bootstrap-treeview.js')}}"></script>
-<script type="text/javascript" src="{{url('packages/bootstrap-dialog/bootstrap-dialog.min.js')}}"></script>
 <script>
     function changeStatus(id) {
         $.post('{{url('/admin-cate/changeStatus')}}',{ids:id},function(data) {
@@ -184,39 +183,6 @@
     }
 
     $(function () {
-        $.extend({
-            /**
-             *dialog
-             *des:提示框
-             */
-            showMsg: function (options) {
-                var defaults = {
-                    text: '成功',
-                    title: '提示'
-                }
-                var opts = $.extend({}, defaults, options);
-                BootstrapDialog.show({
-                    title: '提示',
-                    size: BootstrapDialog.SIZE_SMALL,
-                    type: BootstrapDialog.TYPE_DEFAULT,
-                    message: opts.text,
-                    buttons: [{
-                        label: '确定',
-                        action: function (dialog) {
-                            dialog.close();
-                        }
-                    }]
-                });
-            },
-            /**
-             *dialog
-             *des:提示框
-             */
-            showMsgText: function (text) {
-                $.showMsg({text: text});
-            }
-        });
-
 
         onLoad();
 
@@ -340,7 +306,7 @@
         $("#btnDel").click(function () {
             var node = $('#left-tree').treeview('getSelected');
             if (node.length == 0) {
-                $.showMsgText('请选择节点');
+                imkkcModal('请选择节点');
                 return;
             }
             BootstrapDialog.confirm({

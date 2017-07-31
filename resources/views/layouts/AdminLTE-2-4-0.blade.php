@@ -71,7 +71,7 @@ desired effect
   @include('layouts.content_header')
 
     <!-- Main content -->
-    <section class="content container-fluid">
+    <section class="content">
       <!--------------------------
         | Your Page Content Here |
         -------------------------->
@@ -83,7 +83,6 @@ desired effect
 
   <!-- Main Footer -->
 @include('layouts.footer')
-@include('layouts.modal')
 
   <!-- Control Sidebar -->
   <!--------------------------
