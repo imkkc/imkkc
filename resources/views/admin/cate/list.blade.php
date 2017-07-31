@@ -2,7 +2,6 @@
 @section('css')
 <!-- DataTables -->
 <link rel="stylesheet" href="{{url('packages/bootstrap-treeview/bootstrap-treeview.min.css')}}">
-<link rel="stylesheet" href="{{url('packages/bootstrap-dialog/bootstrap-dialog.min.css')}}">
 <style>
 
     .margin-t-5{margin-bottom: 5px;}
@@ -177,7 +176,7 @@
             if (data.success) {
                 window.location.reload();
             } else {
-                alert(data.info);
+                imkkcAlerts(data.info);
             }
         });
     }
@@ -221,7 +220,7 @@
                             showCheckbox: false//是否显示多选
                         });
                     } else {
-                        alert('没有数据');
+                        imkkcAlerts('没有数据');
                     }
                 }
             });
@@ -266,7 +265,7 @@
                         $('#left-tree').treeview('addNode', [node, parentNode]);
 
                     } else {
-                        alert('添加失败了');
+                        imkkcAlerts('添加失败了');
                     }
                 }
             });
@@ -295,7 +294,7 @@
 //                        $('#left-tree').treeview('updateNode', [node, newNode]);
                         onLoad();
                     } else {
-                        alert('添加失败了');
+                        imkkcAlerts('添加失败了');
                     }
                 }
             });
@@ -306,7 +305,7 @@
         $("#btnDel").click(function () {
             var node = $('#left-tree').treeview('getSelected');
             if (node.length == 0) {
-                imkkcModal('请选择节点');
+                imkkcAlerts('请选择节点');
                 return;
             }
             BootstrapDialog.confirm({
@@ -349,7 +348,7 @@
                             showCheckbox: false//是否显示多选
                         });
                     } else {
-                        alert('没有数据');
+                        imkkcAlerts('没有数据');
                     }
                 }
             });
