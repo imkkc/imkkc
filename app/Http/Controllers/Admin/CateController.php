@@ -37,8 +37,12 @@ class CateController extends Controller
             'parent' => $input['parent'] ? (int)$input['parent'] : 0,
             'icon' => $input['icon'] ? $input['icon'] : 'fa-circle-o',
         ];
+        $cate = AdminCate::where($admin)->first();
+        if ($cate) {
+            return response()->json(['status' => 403, 'message' => '该权限菜单已经存在，不能重复添加']);
+        }
         AdminCate::create($admin);
-        return response()->json(['status' => 200, 'info' => '添加成功']);
+        return response()->json(['status' => 200, 'message' => '添加成功']);
     }
 
     public function editTree(Request $request){
@@ -50,53 +54,25 @@ class CateController extends Controller
         $model->parent = (int)$input['parent'];
         $model->icon = (int)$input['icon'];
         if ($model->save()) {
-            return response()->json(['status' => 200, 'info' => '修改成功']);
+            return response()->json(['status' => 200, 'message' => '修改成功']);
         }else{
-            return response()->json(['status' => 110, 'info' => '修改失败了']);        }
+            return response()->json(['status' => 110, 'message' => '修改失败了']);        }
     }
 
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\AdminCate  $adminCate
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function delTree(Request $request)
     {
         $input = $request->input();
+        $id = ($input['id'] == 'open') ? 1 : 0;
+        $status = ($input['opt'] == 'open') ? 1 : 0;
+        $ret = AdminCate::where('id',$id)->update(
+            ['status' => $status, 'updated_at' => date('Y-m-d H:i:s', time())]
+        );
+        if ($ret)
+            return response()->json(['status' => 200, 'message' => '处理完毕']);
+        else
+            return response()->json(['status' => 201, 'message' => '处理失败']);
 
-        $model = AdminCate::find($id);
-        if (!$model) {
-            return Redirect::back()->with('errorMessage', ' 没有符合的信息 ! ');
-        }
-        if ($input['cate_name'] == $model->cate_name  &&  $input['cate_path'] == $model->cate_path)
-        {
-            return Redirect::back()->with('message', ' 没有任何信息变化 ! ');
-        }
-        $match = [
-            'cate_name'=> 'required|max:30',
-            'cate_path' => 'required|max:100',
-        ];
-        if ($model->cate_name != $input['cate_name']) {
-            $match['cate_name'] .= '|unique:admin_cates';
-        }
-        if ($model->cate_path != $input['cate_path']) {
-            $match['cate_path'] .= '|unique:admin_cates';
-        }
-        $validator = Validator::make($input,$match);
-        if ($validator->fails()) {
-            return Redirect::back()->withErrors($validator)->withInput();
-        }
-        $model->cate_name = $input['cate_name'];
-        $model->cate_path = $input['cate_path'];
-        $model->parent    = $input['parent'];
-        if ($model->save()) {
-            return Redirect::back()->with('message', ' 修改成功 ! '. date('y-m-d H:i:s',time()));
-        }else{
-            return Redirect::back()->with('errorMessage', ' 修改失败了 ! ');
-        }
     }
 
     /**
@@ -110,33 +86,5 @@ class CateController extends Controller
         abort(503);
     }
 
-    function changeStatus(Request $request)
-    {
-        $param = $request->toArray();
-        try {
-            if (isset($param['opt'])) {
-                $status = ($param['opt'] == 'open') ? 1 : 0;
-                $idArr  = explode(',', $param['ids']);
-                if (!is_array($idArr)) {
-                    return response()->json(['success' => false, 'info' => '数据错误!']);
-                }
-                foreach ($idArr as $id) {
-                    AdminCate::where('id',$id)->update(['status' => $status, 'updated_at' => date('Y-m-d H:i:s', time())]);
-                }
-                return response()->json(['success' => true, 'info' => '处理完毕']);
-            } else {
-                $id = (int)$param['ids'];
-                if (!$id) {
-                    return response()->json(['success' => false, 'info' => '数据错误!']);
-                }
-                $model = AdminCate::find($id);
-                $status = $model->status ? 0 : 1;
-                AdminCate::where('id',$id)->update(['status' => $status, 'updated_at' => date('Y-m-d H:i:s', time())]);
-                return response()->json(['success' => true, 'info' => '处理完毕']);
-            }
-        } catch (Exception $e) {
-            return response()->json(['success' => false, 'info' => $e->getMessage()]);
-        }
-    }
 
 }

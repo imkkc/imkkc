@@ -35,7 +35,7 @@ Route::group(['namespace' => 'Admin','middleware' => ['auth.admin:admin','menu:a
     Route::any('admin-cate/getTree', 'CateController@getTree');
     Route::any('admin-cate/addTree', 'CateController@addTree');
     Route::any('admin-cate/editTree', 'CateController@editTree');
-    Route::any('admin-cate/changeStatus', 'CateController@changeStatus');
+    Route::any('admin-cate/delTree', 'CateController@delTree');
     Route::resource('admin-cate', 'CateController');
 
 });

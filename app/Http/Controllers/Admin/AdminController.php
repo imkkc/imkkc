@@ -141,7 +141,7 @@ class AdminController extends Controller
     }
 
     function icons(){
-        $page = pageNav('Icons列表','Icons筛选','a set of beautiful icons');
+        $page = pageNav('Icons列表','Icons筛选','直接复制icons后的css到使用处');
         return view('admin.ui.icons',compact('page'));
     }
 

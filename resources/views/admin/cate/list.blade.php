@@ -19,6 +19,19 @@
         <!-- /.box-header -->
         <div class="box-body">
             <div class="container">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Large modal</button>
+
+                <div class="modal fade bs-example-modal-lg" role="dialog" tabindex="-1" aria-labelledby="myLargeModalLabel" style="display: none;">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                <h4 class="modal-title" id="myLargeModalLabel">Large modal</h4></div>
+                            <div class="modal-body"> ...</div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="col-md-3">
                         <div class="panel panel-primary ">
@@ -184,7 +197,7 @@
             if (data.success) {
                 window.location.reload();
             } else {
-                imkkcAlerts(data.info);
+                imkkcAlerts(data.message);
             }
         });
     }
@@ -221,8 +234,8 @@
                                     $('#editParentText').val(parent[0].text);
                                 }
                                 //添加区
-                                $('#addName').val('');
-                                $('#addLink').val('');
+                                //$('#addName').val('');
+                                //$('#addLink').val('');
                                 $('#addParentID').val(node.id);
                                 $('#addParentText').val(node.text);
                             },
@@ -270,12 +283,13 @@
                         var node = {
                             text: $('#addName').val(),
                             parent: $('#addParentID').val(),
+                            icon: $('#addIcon').val(),
                             link: $('#addLink').val()
                         };
                         $('#left-tree').treeview('addNode', [node, parentNode]);
 
                     } else {
-                        imkkcAlerts('添加失败了');
+                        imkkcAlerts(data.message);
                     }
                 }
             });
@@ -305,7 +319,7 @@
 //                        $('#left-tree').treeview('updateNode', [node, newNode]);
                         onLoad();
                     } else {
-                        imkkcAlerts('添加失败了');
+                        imkkcAlerts(data.message);
                     }
                 }
             });
@@ -319,22 +333,23 @@
                 imkkcAlerts('请选择节点');
                 return;
             }
-            BootstrapDialog.confirm({
-                title: '提示',
-                message: '确定删除此节点?',
-                size: BootstrapDialog.SIZE_SMALL,
-                type: BootstrapDialog.TYPE_DEFAULT,
-                closable: true,
-                btnCancelLabel: '取消',
-                btnOKLabel: '确定',
-                callback: function (result) {
-                    if (result) {
-                        del();
+            if(confirm('确认要删除该节点吗？')){
+                $.ajax({
+                    type: "post",
+                    url: '{{url('/admin-cate/delTree')}}',
+                    data: {
+                        id: $('#treeID').val(),
+                        opt: 'close'
+                    },
+                    success: function (data) {
+                        if (data.status == 200) {
+                            $('#left-tree').treeview('removeNode', [node, {silent: true}]);
+                        } else {
+                            imkkcAlerts(data.message);
+                        }
                     }
-                }
-            });
-            function del() {
-                $('#left-tree').treeview('removeNode', [node, {silent: true}]);
+                });
+
             }
 
         });

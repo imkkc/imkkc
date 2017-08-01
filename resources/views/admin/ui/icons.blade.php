@@ -2297,3 +2297,10 @@
     </div>
     <!-- /.row -->
 @endsection
+@section('js')
+    <script>
+        $(function(){
+            $('div.fontawesome-icon-list i').after(' fa fa-fw');
+        })
+    </script>
+    @endsection
