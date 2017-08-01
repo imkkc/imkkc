@@ -34,7 +34,8 @@ class CateController extends Controller
         $admin = [
             'text' => $input['text'],
             'link' => $input['link'],
-            'parent' => $input['parent'],
+            'parent' => $input['parent'] ? (int)$input['parent'] : 0,
+            'icon' => $input['icon'] ? $input['icon'] : 'fa-circle-o',
         ];
         AdminCate::create($admin);
         return response()->json(['status' => 200, 'info' => '添加成功']);
@@ -46,7 +47,8 @@ class CateController extends Controller
 
         $model->text = $input['text'];
         $model->link = $input['link'];
-        $model->parent = $input['parent'];
+        $model->parent = (int)$input['parent'];
+        $model->icon = (int)$input['icon'];
         if ($model->save()) {
             return response()->json(['status' => 200, 'info' => '修改成功']);
         }else{

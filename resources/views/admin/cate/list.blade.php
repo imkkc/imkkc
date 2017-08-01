@@ -52,6 +52,10 @@
                                             <input id="addParentText" type="text"  class="form-control" />
                                             <input id="addParentID" type="hidden"  class="form-control" />
                                         </div>
+                                        <div class="input-group margin-t-5">
+                                            <span class="input-group-addon" style="cursor: pointer"><a href="/admin/icons" target="_blank">选icon<i class="fa fa-fw fa-plus-square"></i></a></span>
+                                            <input id="addIcon" type="text"  class="form-control" />
+                                        </div>
                                     </div>
                                     <div style="margin-top: 10px;">
                                         <input id="Save" class="btn btn-primary" type="button" value="确认添加" />
@@ -97,10 +101,14 @@
                                             <input id="editLink" type="text"  class="form-control" />
                                         </div>
                                         <div class="input-group margin-t-5">
-                                            <span id="btnMove" class="input-group-addon" style="cursor: pointer">属上级<i class="fa fa-fw fa-plus-square"></i></span>
+                                            <span id="btnMove" class="input-group-addon" style="cursor: pointer">选上级<i class="fa fa-fw fa-plus-square"></i></span>
                                             <input id="editParentText" type="text"  class="form-control" />
                                             <input id="editParentID" type="hidden"  class="form-control" />
                                             <input id="treeID" type="hidden"  class="form-control" />
+                                        </div>
+                                        <div class="input-group margin-t-5">
+                                            <span class="input-group-addon" style="cursor: pointer"><a href="/admin/icons" target="_blank">选icon<i class="fa fa-fw fa-plus-square"></i></a></span>
+                                            <input id="editIcon" type="text"  class="form-control" />
                                         </div>
                                     </div>
                                     <div style="margin-top: 10px;">
@@ -203,6 +211,7 @@
                                 $('#editName').val(node.text);
                                 $('#editLink').val(node.link);
                                 $('#treeID').val(node.id);
+                                $('#editIcon').val(node.icon);
                                 var parent = $('#left-tree').treeview('getParents', node);
                                 if (parent.length == 0) {
                                     $('#editParentID').val(0);
@@ -251,6 +260,7 @@
                 data: {
                     text: $('#addName').val(),
                     parent: $('#addParentID').val(),
+                    icon: $('#addIcon').val(),
                     link: $('#addLink').val()
                 },
                 success: function (data) {
@@ -280,6 +290,7 @@
                     id: $('#treeID').val(),
                     text: $('#editName').val(),
                     link: $('#editLink').val(),
+                    icon: $('#editIcon').val(),
                     parent: $('#editParentID').val()
                 },
                 success: function (data) {
@@ -341,6 +352,12 @@
                             data: data.info,
                             levels: 3,
                             onNodeSelected: function (event, node) {
+                                if ($('#editName').val() == node.text)
+                                {
+                                    $('#addOperation-dialog').modal('hide');
+                                    imkkcAlerts('权限菜单不能选择自己作为上级，请选择菜单树其他节点');
+                                    return false;
+                                }
                                 $('#editParentID').val(node.id);
                                 $('#editParentText').val(node.text);
                                 $('#addOperation-dialog').modal('hide');

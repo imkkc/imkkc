@@ -25,6 +25,7 @@ Route::group(['namespace' => 'Admin','middleware' => ['auth.admin:admin','menu:a
 
     //后台用户的路由
     Route::any('batAdmin', 'AdminController@batAdmin');
+    Route::any('admin/icons', 'AdminController@icons');
     Route::any('admin/index', 'AdminController@index');
     Route::any('admin/changeStatus', 'AdminController@changeStatus');
     Route::resource('admin', 'AdminController');
