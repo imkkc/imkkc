@@ -2335,27 +2335,9 @@
             }else{
                 iconClass=$(this).find("span.glyphicon").eq(0).attr("class");
             }
-            console.log(iconClass);
             $('.bs-example-modal-lg').modal('hide');
-            $("#addIcon").val(iconClass);
-            $("#icon_i").removeClass().addClass(iconClass);
-        });
-        //双击获取图标名称 关闭窗口 并回填数据
-        var iconClass=null;
-        $("#fa-icons div.col-md-3,#glyphicons li").dblclick(function(){
-            var fa_len=$(this).find("i.fa").length;
-            var gl_len=$(this).find("span.glyphicon").length;
-            if(fa_len==1){
-                iconClass=$(this).find("i.fa").eq(0).attr("class");//.replace('fa-fw ','');
-            }else{
-                iconClass=$(this).find("span.glyphicon").eq(0).attr("class");
-            }
-            console.log(iconClass);
-            $('.bs-example-modal-lg').modal('hide');
-            $("#addIcon").val(iconClass);
-            $("#icon_i").removeClass().addClass(iconClass);
-            //modals.hideWin(winId);
-            //fillBackIconName(iconClass);
+            $(".IconInput").val(iconClass);
+            $(".icon_i").removeClass().addClass('icon_i '+iconClass);
         });
         //选中回填的图标
         if(iconName&&iconName!="undefined"){

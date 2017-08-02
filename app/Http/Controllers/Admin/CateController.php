@@ -24,7 +24,7 @@ class CateController extends Controller
     }
 
     public function getTree(){
-        $list = AdminCate::all()->toArray();
+        $list = AdminCate::where(array('status'=>1))->get()->toArray();
         $tree = getTree($list,0);
         return response()->json(['status' => 200, 'info' => $tree]);
     }
@@ -66,7 +66,10 @@ class CateController extends Controller
     public function delTree(Request $request)
     {
         $input = $request->input();
-        $id = ($input['id'] == 'open') ? 1 : 0;
+        $id = (int)$input['id'];
+        if(!$id){
+            return response()->json(['status' => 200, 'message' => '请选择节点']);
+        }
         $status = ($input['opt'] == 'open') ? 1 : 0;
         $ret = AdminCate::where('id',$id)->update(
             ['status' => $status, 'updated_at' => date('Y-m-d H:i:s', time())]

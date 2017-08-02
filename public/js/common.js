@@ -86,3 +86,26 @@ function imkkcAlerts(message,type) {
     $('section.content').prepend(html);
     $("#modal-"+type).modal('show');
 }
+
+/**
+ * 可以使用这样的方式加载页面，a标签改成span也行
+ * <a data-toggle="modal" href="/admin/icons" data-target=".bs-example-modal-lg">Icons</a>
+ */
+function regHtml(name) {
+    var html = '';
+    name = name || 'modal-lg';
+    if(name == 'modal-lg'){
+        html += '<div class="modal fade bs-example-modal-lg" role="dialog" tabindex="-1" aria-labelledby="myLargeModalLabel" style="display: none;">';
+        html += '<div class="modal-dialog modal-lg" role="document">';
+        html += '<div class="modal-content">';
+        html += '<div class="modal-header">';
+        html += '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>';
+        html += '<h4 class="modal-title" id="myLargeModalLabel">Large modal</h4></div>';
+        html += '<div class="modal-body"> ...</div>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+    }
+    $('section.content').prepend(html);
+
+}
