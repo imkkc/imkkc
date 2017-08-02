@@ -31,6 +31,9 @@ class CateController extends Controller
 
     public function addTree(Request $request){
         $input = $request->input();
+        if (!$input['text']){
+            return response()->json(['status' => 403, 'message' => '请填写一个权限名称']);
+        }
         $admin = [
             'text' => $input['text'],
             'link' => $input['link'],

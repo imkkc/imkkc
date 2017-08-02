@@ -19,7 +19,6 @@
         <!-- /.box-header -->
         <div class="box-body">
             <div class="container">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg">Large modal</button>
 
                 <div class="modal fade bs-example-modal-lg" role="dialog" tabindex="-1" aria-labelledby="myLargeModalLabel" style="display: none;">
                     <div class="modal-dialog modal-lg" role="document">
@@ -66,7 +65,9 @@
                                             <input id="addParentID" type="hidden"  class="form-control" />
                                         </div>
                                         <div class="input-group margin-t-5">
-                                            <span class="input-group-addon" style="cursor: pointer"><a href="/admin/icons" target="_blank">选icon<i class="fa fa-fw fa-plus-square"></i></a></span>
+                                            <span class="input-group-addon" data-toggle="modal" href="/admin/icons" data-target=".bs-example-modal-lg" style="cursor: pointer">
+                                                ICON <i id="icon_i" class="fa fa-fw fa-plus-square"></i>
+                                            </span>
                                             <input id="addIcon" type="text"  class="form-control" />
                                         </div>
                                     </div>
@@ -120,7 +121,9 @@
                                             <input id="treeID" type="hidden"  class="form-control" />
                                         </div>
                                         <div class="input-group margin-t-5">
-                                            <span class="input-group-addon" style="cursor: pointer"><a href="/admin/icons" target="_blank">选icon<i class="fa fa-fw fa-plus-square"></i></a></span>
+                                            <span class="input-group-addon" data-toggle="modal" href="/admin/icons" data-target=".bs-example-modal-lg" style="cursor: pointer">
+                                                ICON <i id="icon_i" class="fa fa-fw fa-plus-square"></i>
+                                            </span>
                                             <input id="editIcon" type="text"  class="form-control" />
                                         </div>
                                     </div>
